@@ -3,15 +3,15 @@ WIPS : PyTorch implementation of the paper "Representation Learning with Weighte
 
 **WIPS** is an open source implementation of the paper "[Representation Learning with Weighted Inner Product for Universal Approximation of General Similarities](https://www.ijcai.org/proceedings/2019/699)." IJCAI-19.
 
-The code will be updated soon.
-
 ## Requirements & Test Environment
 
-- Python3
-- PyTorch 1.1.0
-- NumPy
+- python3
+- pytorch=1.1.0
 - scikit-learn
 - tqdm
+- nltk
+- gensim
+- numpy
 - Tested on CentOS Linux release 7.4.1708
 
 ## Acknowledgements

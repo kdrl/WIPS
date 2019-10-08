@@ -9,8 +9,6 @@ class Embedding(nn.Module):
 
     def __init__(self, opt):
         super(Embedding, self).__init__()
-        self.wips_positive_initialization = opt["wips_positive_initialization"]
-        self.unified = True
         self.model = opt["model_name"]
         self.total_node_num = opt["total_node_num"]
         self.train_node_num = opt["train_node_num"]
@@ -26,23 +24,17 @@ class Embedding(nn.Module):
         self.U = nn.Linear(opt["hidden_size"], opt["parameter_num"])
 
     def initialization(self):
-        print(f"Parameter list : {self.named_parameters()}")
 
         for name, param in self.named_parameters():
             if 'data_vectors' in name:
-                print("Skip init. {} since it is already given".format(name))
                 continue
             if 'ips_weight' in name:
-                assert self.wips_positive_initialization:
-                print("Init. {} with uniform distribution 0.0 - {}".format(name, self.wips_positive_initialization))
-                init.uniform_(param, 0.0, self.wips_positive_initialization)
-                print(f" -> param : {param.data.numpy()}")
+                # init.uniform_(param, 0.0, 1.0/self.parameter_num) # **For simplicity**, the results of the paper came from this line.
+                init.uniform_(param, -0.5/self.parameter_num, 0.5/self.parameter_num) # Recommended (since it shows better results for most cases).
                 continue
             if 'bias' in name:
-                print("Init. {} to zero".format(name))
                 init.constant_(param, 0.0)
             elif 'weight' in name:
-                print("Init. {} with He".format(name))
                 init.kaiming_uniform_(param, mode='fan_in', nonlinearity='relu')
             else:
                 raise Exception(name)
